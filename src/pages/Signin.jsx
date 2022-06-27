@@ -18,16 +18,14 @@ import { useNavigate } from "react-router-dom";
 export default function Signin() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [paperToken, setPaperToken] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const accessToken = await auth(email, password);
-      if (accessToken) {
-        console.log(accessToken);
-        localStorage.setItem("accessToken", accessToken);
+      if (paperToken) {
+        console.log(paperToken);
+        localStorage.setItem("paperToken", paperToken);
         navigate("/main");
       } else {
         throw new Error("Invalid credentials");
@@ -38,17 +36,13 @@ export default function Signin() {
   };
 
   function handleChange(event) {
-    const { name, value } = event.target;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
+    const { value } = event.target;
+    setPaperToken(value);
   }
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      localStorage.removeItem("accessToken");
+    if (localStorage.getItem("paperToken")) {
+      localStorage.removeItem("paperToken");
     }
   }, []);
 
@@ -70,17 +64,9 @@ export default function Signin() {
         >
           <form onSubmit={handleSubmit} id="login-form">
             <Stack spacing={4}>
-              <FormControl id="email">
-                <FormLabel>seu login em strateegia</FormLabel>
-                <Input type="email" name="email" onChange={handleChange} />
-              </FormControl>
-              <FormControl id="password">
-                <FormLabel>sua senha em strateegia</FormLabel>
-                <Input
-                  type="password"
-                  name="password"
-                  onChange={handleChange}
-                />
+              <FormControl id="paperToken">
+                <FormLabel>coloca aqui o token do papel</FormLabel>
+                <Input name="paperToken" onChange={handleChange} />
               </FormControl>
               <Stack spacing={10}>
                 <Button
